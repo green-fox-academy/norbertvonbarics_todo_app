@@ -21,6 +21,8 @@ public class Todo {
     List<String> todoList = readFiles();
 
     if (args.length == 0) {
+      Ascii logo = new Ascii();
+      logo.print();
       System.out.println(USAGE);
 
     } else if (args[0].equals("-l")) {
