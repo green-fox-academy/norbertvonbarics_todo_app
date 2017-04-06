@@ -23,29 +23,28 @@ public class Todo {
     if (args.length == 0) {
       System.out.println(USAGE);
     } else if (args[0].equals("-l")) {
-      for (int i = 0; i < todoList.size(); i++) {
-        System.out.println(i + 1 + " - " + todoList.get(i));
-      }
+      print(todoList);
 
     } else if (args[0].equals("-a")) {
       userInput = "[ ] " + args[1];
       todoList.add(userInput);
-      writeToFile(todoList);
+      System.out.println("");
       System.out.println("Task " + userInput + " added to ToDo list!");
+      writeToFile(todoList);
       print(todoList);
 
     } else if (args[0].equals("-r")) {
-      String remove = todoList.get(Integer.parseInt(args[1]) - 1).substring(3);
+      String remove = todoList.get(Integer.parseInt(args[1]) - 1);
       todoList.remove(Integer.parseInt(args[1]) - 1);
+      System.out.println("Task " + remove + " removed from ToDo list!");
       writeToFile(todoList);
       print(todoList);
-      System.out.println("Task " + remove + " removed from ToDo list!");
 
     } else if (args[0].equals("-c")) {
       String tempTask = todoList.get(Integer.parseInt(args[1])-1).substring(3);
-      System.out.println(tempTask);
-      todoList.remove(Integer.parseInt(args[1]) - 1);
-      todoList.add("[X]" + tempTask);
+      int tempInt = Integer.parseInt(args[1]) - 1;
+      todoList.set(tempInt, "[X]" + tempTask);
+      System.out.println("");
       writeToFile(todoList);
       print(todoList);
 
@@ -58,7 +57,7 @@ public class Todo {
     }
   }
 
-  public static List<String> readFiles() {
+  private static List<String> readFiles() {
     List<String> rawLines = new ArrayList<>();
     Path myPath = Paths.get(DATAPATH);
     try {
@@ -78,7 +77,8 @@ public class Todo {
     }
   }
 
-  public static void print(List todoList) {
+  private static void print(List todoList) {
+    System.out.println("");
     for (int i = 0; i < todoList.size(); i++) {
       System.out.println(i + 1 + " - " + todoList.get(i));
     }
