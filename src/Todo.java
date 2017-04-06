@@ -22,26 +22,37 @@ public class Todo {
 
     if (args.length == 0) {
       System.out.println(USAGE);
+
     } else if (args[0].equals("-l")) {
       print(todoList);
 
     } else if (args[0].equals("-a")) {
-      userInput = "[ ] " + args[1];
-      todoList.add(userInput);
-      System.out.println("");
-      System.out.println("Task " + userInput + " added to ToDo list!");
-      writeToFile(todoList);
-      print(todoList);
+      if (args.length == 1) {
+        System.out.println("");
+        System.out.println("No task provided!");
+        
+      } else {
+        userInput = "[ ] " + args[1];
+        todoList.add(userInput);
+        System.out.println("");
+        System.out.println("Task " + userInput + " added to ToDo list!");
+        writeToFile(todoList);
+        print(todoList);
+      }
 
     } else if (args[0].equals("-r")) {
-      String remove = todoList.get(Integer.parseInt(args[1]) - 1);
-      todoList.remove(Integer.parseInt(args[1]) - 1);
-      System.out.println("Task " + remove + " removed from ToDo list!");
-      writeToFile(todoList);
-      print(todoList);
-
+        if (args.length == 1) {
+          System.out.println("");
+          System.out.println("Unable to remove: no index provided");
+        } else {
+          String remove = todoList.get(Integer.parseInt(args[1]) - 1).substring(4);
+          todoList.remove(Integer.parseInt(args[1]) - 1);
+          System.out.println("Task " + remove + " removed from ToDo list!");
+          writeToFile(todoList);
+          print(todoList);
+        }
     } else if (args[0].equals("-c")) {
-      String tempTask = todoList.get(Integer.parseInt(args[1])-1).substring(3);
+      String tempTask = todoList.get(Integer.parseInt(args[1]) - 1).substring(3);
       int tempInt = Integer.parseInt(args[1]) - 1;
       todoList.set(tempInt, "[X]" + tempTask);
       System.out.println("");
