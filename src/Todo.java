@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Todo {
   private static final String DATAPATH = "./assets/data.csv";
+  private static final String LINE = "=======================================\n";
   private static final String USAGE = "JAVA!!! Todo application\n" +
           "=======================\n" +
           "\n" +
@@ -33,13 +34,13 @@ public class Todo {
 
     } else if (args[0].equals("-a")) {
       if (args.length == 1) {
-        System.out.println("");
-        System.out.println("No task provided!");
+        lineBreak();
+        System.out.println(LINE + "No task provided!\n" + LINE);
 
       } else {
         userInput = "[ ] " + args[1];
         todoList.add(userInput);
-        System.out.println("");
+        lineBreak();
         System.out.println("Task " + userInput + " added to ToDo list!");
         writeToFile(todoList);
         print(todoList);
@@ -47,28 +48,34 @@ public class Todo {
 
     } else if (args[0].equals("-r")) {
       if (args.length == 1) {
-        System.out.println("");
-        System.out.println("Unable to remove: no index provided");
+        lineBreak();
+        System.out.println(LINE + "Unable to remove: no index provided\n" + LINE);
       } else {
         String remove = todoList.get(Integer.parseInt(args[1]) - 1).substring(4);
         todoList.remove(Integer.parseInt(args[1]) - 1);
+        lineBreak();
         System.out.println("Task " + remove + " removed from ToDo list!");
         writeToFile(todoList);
         print(todoList);
       }
     } else if (args[0].equals("-c")) {
-      String tempTask = todoList.get(Integer.parseInt(args[1]) - 1).substring(3);
-      int tempInt = Integer.parseInt(args[1]) - 1;
-      todoList.set(tempInt, "[X]" + tempTask);
-      System.out.println("");
-      writeToFile(todoList);
+      if (todoList.size() < Integer.parseInt(args[1])) {
+        lineBreak();
+        System.out.println(LINE + "Unable to check: index is out of bound!\n" + LINE);
+
+      } else {
+        String tempTask = todoList.get(Integer.parseInt(args[1]) - 1).substring(3);
+        int tempInt = Integer.parseInt(args[1]) - 1;
+        todoList.set(tempInt, "[X]" + tempTask);
+        lineBreak();
+        writeToFile(todoList);
+      }
       print(todoList);
 
     } else {
-      System.out.println();
-      System.out.println("=======================\n" + "Unsupported argument!\n" +
-              "=======================\n");
-      System.out.println();
+      lineBreak();
+      System.out.println(LINE + "Unsupported argument!\n" + LINE);
+      lineBreak();
       System.out.println(USAGE);
     }
   }
@@ -79,7 +86,7 @@ public class Todo {
     try {
       rawLines = Files.readAllLines(myPath);
     } catch (IOException ex) {
-      System.out.println("SYNTAX ERROR");
+      System.out.println("SYNTAX ERROR + (READ)");
     }
     return rawLines;
   }
@@ -89,24 +96,28 @@ public class Todo {
     try {
       Files.write(myPath, data);
     } catch (IOException ex) {
-      System.out.println("SYNTAX ERROR");
+      System.out.println("SYNTAX ERROR + (WRITE)");
     }
   }
 
   private static void print(List todoList) {
-    System.out.println("");
+    lineBreak();
     for (int i = 0; i < todoList.size(); i++) {
       System.out.println(i + 1 + " - " + todoList.get(i));
     }
   }
 
   private static void printUncomplete(List todoList) {
-    System.out.println("");
+    lineBreak();
     for (int j = 0; j < todoList.size(); j++) {
-      if (todoList.get(j).toString().substring(0, 3).equals("[ ]")){
+      if (todoList.get(j).toString().substring(0, 3).equals("[ ]")) {
         System.out.println(todoList.get(j));
       }
     }
+  }
+
+  private static void lineBreak() {
+    System.out.println("");
   }
 }
 
