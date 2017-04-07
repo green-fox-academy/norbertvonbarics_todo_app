@@ -12,7 +12,7 @@ public class Ascii {
   }
 
   public void printUsage() {
-    System.out.println("JAVA!!! Todo application\n" +
+    System.out.println("JAVA Todo application\n" +
             "=======================\n" +
             "\n" +
             "Command line arguments:\n" +
