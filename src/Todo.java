@@ -14,6 +14,7 @@ public class Todo {
   private static final String ADD = " added to ToDo list!";
   private static final String REMOVED = " removed from ToDo list!";
   private static final String UNSUPPORTED = "Unsupported argument!\n";
+  private static final String ERROR = "SYNTAX ERROR: ";
 
   public static void main(String[] args) {
     String userInput = "";
@@ -85,7 +86,7 @@ public class Todo {
     try {
       rawLines = Files.readAllLines(myPath);
     } catch (IOException ex) {
-      System.out.println("SYNTAX ERROR + (READ)");
+      System.out.println(ERROR + "READ");
     }
     return rawLines;
   }
@@ -95,7 +96,7 @@ public class Todo {
     try {
       Files.write(myPath, data);
     } catch (IOException ex) {
-      System.out.println("SYNTAX ERROR + (WRITE)");
+      System.out.println(ERROR + "WRITE");
     }
   }
 
