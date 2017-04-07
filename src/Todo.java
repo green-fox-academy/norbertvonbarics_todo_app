@@ -8,14 +8,12 @@ import java.util.List;
 public class Todo {
   private static final String DATAPATH = "./assets/data.csv";
   private static final String LINE = "=======================================\n";
-  private static final String USAGE = "JAVA!!! Todo application\n" +
-          "=======================\n" +
-          "\n" +
-          "Command line arguments:\n" +
-          " -l   Lists all the tasks\n" +
-          " -a   Adds a new task\n" +
-          " -r   Removes an task\n" +
-          " -c   Completes an task";
+  private static final String UNABLETOCHECK = "Unable to check: index is out of bound!\n";
+  private static final String UNABLETOREMOVE = "Unable to remove: no index provided!\n";
+  private static final String NOTASK = "Unable to add task: No task provided!\n";
+  private static final String ADD = " added to ToDo list!";
+  private static final String REMOVED = " removed from ToDo list!";
+  private static final String UNSUPPORTED = "Unsupported argument!\n";
 
   public static void main(String[] args) {
     String userInput = "";
@@ -24,7 +22,7 @@ public class Todo {
     if (args.length == 0) {
       Ascii logo = new Ascii();
       logo.printAscii();
-      System.out.println(USAGE);
+      logo.printUsage();
 
     } else if (args[0].equals("-l")) {
       printUncomplete(todoList);
@@ -35,13 +33,13 @@ public class Todo {
     } else if (args[0].equals("-a")) {
       if (args.length == 1) {
         lineBreak();
-        System.out.println(LINE + "No task provided!\n" + LINE);
+        System.out.println(LINE + NOTASK + LINE);
 
       } else {
         userInput = "[ ] " + args[1];
         todoList.add(userInput);
         lineBreak();
-        System.out.println("Task " + userInput + " added to ToDo list!");
+        System.out.println("Task " + userInput.substring(4) + ADD);
         writeToFile(todoList);
         print(todoList);
       }
@@ -49,19 +47,19 @@ public class Todo {
     } else if (args[0].equals("-r")) {
       if (args.length == 1) {
         lineBreak();
-        System.out.println(LINE + "Unable to remove: no index provided\n" + LINE);
+        System.out.println(LINE + UNABLETOREMOVE + LINE);
       } else {
         String remove = todoList.get(Integer.parseInt(args[1]) - 1).substring(4);
         todoList.remove(Integer.parseInt(args[1]) - 1);
         lineBreak();
-        System.out.println("Task " + remove + " removed from ToDo list!");
+        System.out.println("Task " + remove + REMOVED);
         writeToFile(todoList);
         print(todoList);
       }
     } else if (args[0].equals("-c")) {
       if (todoList.size() < Integer.parseInt(args[1])) {
         lineBreak();
-        System.out.println(LINE + "Unable to check: index is out of bound!\n" + LINE);
+        System.out.println(LINE + UNABLETOCHECK + LINE);
 
       } else {
         String tempTask = todoList.get(Integer.parseInt(args[1]) - 1).substring(3);
@@ -73,10 +71,11 @@ public class Todo {
       print(todoList);
 
     } else {
+      Ascii logo = new Ascii();
       lineBreak();
-      System.out.println(LINE + "Unsupported argument!\n" + LINE);
+      System.out.println(LINE + UNSUPPORTED + LINE);
       lineBreak();
-      System.out.println(USAGE);
+      logo.printUsage();
     }
   }
 
